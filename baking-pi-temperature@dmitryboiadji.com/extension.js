@@ -7,15 +7,13 @@ const Me = ExtensionUtils.getCurrentExtension();
 
 
 const _ = ExtensionUtils.gettext;
-let timeout, buttonText;
+let buttonText;
 const Indicator = GObject.registerClass(
     class Indicator extends PanelMenu.Button {
 
 
         _setButtonText() {
-
             try {
-
                 let httpSession = new Soup.Session();
                 let url = 'https://{{YOUR_prometheus_HOST}}/api/v1/query?query=node_thermal_zone_temp';
                 let message = Soup.Message.new('GET', url);
@@ -29,26 +27,9 @@ const Indicator = GObject.registerClass(
                         out = temperatureData.data.result[0].value[1];
                         out = parseFloat(out).toFixed(1);
                     }
-
-
                     buttonText.set_text(out + ' °C');
 
                 })
-
-                //  This one a bit slow
-                //
-                // var arr = [];
-                //
-                // var [ok, out, err, exit] = GLib.spawn_command_line_sync(
-                //     '/bin/bash -c "ssh pi.local vcgencmd measure_temp"');
-                // if (out.length > 0) {
-                //
-                //     out = ByteArray.toString(out)
-                //     out = out.replace('temp=', '');
-                //     out = out.replace('\'', '°');
-                //     arr.push(out);
-                // }
-
 
             } catch (e) {
                 reject(e);
@@ -106,7 +87,6 @@ class Extension {
             GLib.Source.remove(this._timeoutId);
             this._timeoutId = null;
         }
-
         this._indicator.destroy();
         this._indicator = null;
     }
