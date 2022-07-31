@@ -1,0 +1,8 @@
+{
+  "name": "Baking Pi Temperature",
+  "description": "Monitor Raspberry Pi temperature",
+  "uuid": "baking-pi@dmitry.boiadji.com",
+  "shell-version": [
+    "42"
+  ]
+}
