@@ -15,7 +15,7 @@ const Indicator = GObject.registerClass(
         _setButtonText() {
             try {
                 let httpSession = new Soup.Session();
-                let url = 'https://{{YOUR_prometheus_HOST}}/api/v1/query?query=node_thermal_zone_temp';
+                let url = 'https://prometheus.example/api/v1/query?query=node_thermal_zone_temp';
                 let message = Soup.Message.new('GET', url);
                 message.request_headers.set_content_type("application/json", null);
                 message.set_request('application/json', 2, '{}');
@@ -74,12 +74,28 @@ class Extension {
         this._indicator = new Indicator();
         let self = this;
 
+
+        // this.settings = ExtensionUtils.getSettings(
+        //     'org.gnome.shell.extensions.baking-pi-temperature');
+
+
+
+        // this.settings.bind(
+        //     'prometheus-url',
+        //     this._indicator,
+        //     'visible',
+        //     Gio.SettingsBindFlags.DEFAULT
+        // );
+
         this._timeoutId = GLib.timeout_add_seconds(GLib.PRIORITY_LOW,
-            5, () => {
+            15, () => {
                 self._indicator._setButtonText();
                 return GLib.SOURCE_CONTINUE;
             });
         Main.panel.addToStatusArea(this._uuid, this._indicator);
+
+
+
     }
 
     disable() {

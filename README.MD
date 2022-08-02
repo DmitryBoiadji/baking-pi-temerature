@@ -1,4 +1,4 @@
-GNOME Shell Baking Pi Temperature
+Baking Pi Temperature
 ===================
 
 GNOME Shell extension to monitor Raspberry Pi temperature.
