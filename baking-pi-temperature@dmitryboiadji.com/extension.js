@@ -1,5 +1,5 @@
 const GETTEXT_DOMAIN = 'baking-pi-temperature';
-const {GObject, St, Clutter, GLib, Gio, Soup} = imports.gi;
+const {GObject, St, Clutter, GLib, Gio, Soup, Gtk} = imports.gi;
 const ExtensionUtils = imports.misc.extensionUtils;
 const Main = imports.ui.main;
 const PanelMenu = imports.ui.panelMenu;
@@ -8,6 +8,8 @@ const Me = ExtensionUtils.getCurrentExtension();
 
 const _ = ExtensionUtils.gettext;
 let buttonText;
+let prometheusUrl;
+
 const Indicator = GObject.registerClass(
     class Indicator extends PanelMenu.Button {
 
@@ -15,7 +17,7 @@ const Indicator = GObject.registerClass(
         _setButtonText() {
             try {
                 let httpSession = new Soup.Session();
-                let url = 'https://prometheus.example/api/v1/query?query=node_thermal_zone_temp';
+                let url = 'https://{{YOUR_prometheus_HOST}}/api/v1/query?query=node_thermal_zone_temp';
                 let message = Soup.Message.new('GET', url);
                 message.request_headers.set_content_type("application/json", null);
                 message.set_request('application/json', 2, '{}');
@@ -75,14 +77,28 @@ class Extension {
         let self = this;
 
 
-        // this.settings = ExtensionUtils.getSettings(
-        //     'org.gnome.shell.extensions.baking-pi-temperature');
+        this.settings = ExtensionUtils.getSettings(
+            'org.gnome.shell.extensions.baking-pi-temperature');
 
 
-
+        let prometheusUrl =  this.settings .get_string('prometheus-url');
+        const entry = new Gtk.Entry({
+            text: prometheusUrl,
+            valign: Gtk.Align.CENTER,
+        });
+        this.settings .bind('prometheus-url',
+            entry,
+            prometheusUrl,
+            Gio.SettingsBindFlags.DEFAULT);
+        //
+        // this.settings.bind('prometheus-url',
+        //     entry,
+        //     prometheusUrl,
+        //     Gio.SettingsBindFlags.DEFAULT);
+        //
         // this.settings.bind(
         //     'prometheus-url',
-        //     this._indicator,
+        //     prometheusUrl,
         //     'visible',
         //     Gio.SettingsBindFlags.DEFAULT
         // );

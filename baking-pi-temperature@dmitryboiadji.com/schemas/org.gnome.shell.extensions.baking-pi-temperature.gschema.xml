@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+  <schema id="org.gnome.shell.extensions.baking-pi-temperature" path="/org/gnome/shell/extensions/baking-pi-temperature/">
+    <key name="prometheus-url" type="s">
+      <default>'https://prometheus.example'</default>
+    </key>
+  </schema>
+</schemalist>
