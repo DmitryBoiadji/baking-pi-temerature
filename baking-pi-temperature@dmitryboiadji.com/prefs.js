@@ -23,36 +23,23 @@ function fillPreferencesWindow(window) {
     group.add(row);
 
 
-    let prometheusUrl = settings.get_string('prometheus-url');
-
-    //settings.set_string('dock-position', 3);
-
 
     // Create the switch and bind its value to the `show-indicator` key
     const entry = new Gtk.Entry({
-        text: prometheusUrl,
+        text:  settings.get_string('prometheus-url'),
         valign: Gtk.Align.CENTER,
     });
 
-
-    settings.bind('prometheus-url',
+    entry.activate =
+    settings.bind(
+        'prometheus-url',
         entry,
-        prometheusUrl,
+        'text',
         Gio.SettingsBindFlags.DEFAULT);
-
 
     // Add the switch to the row
     row.add_suffix(entry);
     row.activatable_widget = entry;
-
-
-    //
-    // settings.bind(
-    //     'prometheus-url',
-    //     prometheusUrl,
-    //     '',
-    //     Gio.SettingsBindFlags.DEFAULT
-    // );
 
 
     // Add our page to the window
